@@ -4,6 +4,7 @@
 import nltk
 from nltk import CFG  # Context-Free Grammar (Gramática Livre de Contexto)
 from nltk.parse.chart import ChartParser  # Parser para análise sintática
+from nltk.tree import Tree
 
 # Antes de executar este código, instale o NLTK com:
 # pip install nltk
@@ -36,8 +37,10 @@ def analisar_frase(parser, sentence):
     print("\nÁrvore(s) sintática(s) possível(is):")
 
     encontrou_arvore = False
+    arvores = []
     for i, tree in enumerate(parser.parse(sentence)):
         encontrou_arvore = True
+        arvores.append(tree)
         print(f"\nÁrvore #{i + 1}:")
         print(tree)
         # Visualização gráfica da árvore (descomente para usar)
@@ -47,6 +50,39 @@ def analisar_frase(parser, sentence):
 
     if not encontrou_arvore:
         print("Nenhuma árvore sintática encontrada para a frase fornecida.")
+    
+    return arvores
+
+def salvar_arvores_html(arvores, arquivo="arvores_constituinte.html"):
+    """
+    Salva a visualização das árvores sintáticas em um arquivo HTML.
+    """
+    html_content = """
+    <html>
+    <head>
+        <title>Árvores Sintáticas</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { color: #333; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+            pre { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
+        </style>
+    </head>
+    <body>
+        <h2>Árvores Sintáticas</h2>
+    """
+
+    for i, tree in enumerate(arvores):
+        html_content += f"<h3>Árvore #{i + 1}</h3>"
+        html_content += f"<pre>{tree.pformat()}</pre>"
+
+    html_content += """
+    </body>
+    </html>
+    """
+
+    with open(arquivo, "w", encoding="utf-8") as f:
+        f.write(html_content)
+    print(f"Árvores sintáticas salvas em {arquivo}")
 
 def main():
     # Definir a gramática
@@ -59,7 +95,10 @@ def main():
     sentence = "O palmeiras não tem mundial".split()
 
     # Analisar a frase
-    analisar_frase(parser, sentence)
+    arvores = analisar_frase(parser, sentence)
+
+    # Salvar as árvores sintáticas em HTML
+    salvar_arvores_html(arvores)
 
 if __name__ == "__main__":
     main()
