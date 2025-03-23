@@ -19,8 +19,8 @@ Este projeto contém exemplos de análise sintática de frases em português uti
 
 1. Clone o repositório:
     ```sh
-    git clone <URL_DO_REPOSITORIO>
-    cd <NOME_DO_REPOSITORIO>
+    git clone https://github.com/flaviovieiradev/analise_sintatica_pln_exemplos.git
+    cd apresentacao-analise-sintatica-pln
     ```
 
 2. Instale as dependências:
